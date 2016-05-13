@@ -63,13 +63,10 @@
     
     CGFloat lockViewW = self.view.frame.size.width;
     GestureLockView *lockView = [[GestureLockView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.tipLabel.frame) + MarginY, lockViewW, lockViewW)];
-    
-//    lockView.backgroundColor = [UIColor redColor];
-    
+    self.gestureLockView = lockView;
+    self.lockViewShotView.image = [self.gestureLockView getShotImage];
     [self.view addSubview:lockView];
     lockView.delegate =self;
-    self.gestureLockView = lockView;
-    [self GetLockViewShot];
     
     CGFloat buttonH = 30;
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -90,25 +87,9 @@
 
 }
 
-// 截图
--(void)GetLockViewShot{
-    // 设置截屏的大小
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.gestureLockView.frame.size.width, self.gestureLockView.frame.size.height), YES, 0);
-    // 开始截图
-    [[self.gestureLockView layer] renderInContext:UIGraphicsGetCurrentContext()];
-    // 获取屏幕截图
-    UIImage *shotImage = UIGraphicsGetImageFromCurrentImageContext();
-    // 结束截图
-    UIGraphicsEndImageContext();
-    
-    self.lockViewShotView.image = shotImage;
-}
-
 // 取消
 - (void)ClickCancelButton:(UIButton *)button{
     [self dismissViewControllerAnimated:YES completion:nil];
-
-
 }
 
 // 重设
@@ -116,7 +97,7 @@
     self.firstLockPath = @"";
     self.tipLabel.textColor = TextColor;
     self.tipLabel.text = @"请设置您的手势密码";
-    [self GetLockViewShot];
+    self.lockViewShotView.image = [self.gestureLockView getShotImage];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -126,10 +126,7 @@
         }
         NSLog(@"--->>>path: %@", path);
         
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.frame.size.width, self.frame.size.height), YES, 0);
-        [[self layer] renderInContext:UIGraphicsGetCurrentContext()];
-        UIImage *shotImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        UIImage *shotImage = [self getShotImage];
         
         [self.delegate lockView:self didFinishPath:path shortImage:shotImage];
         
@@ -180,6 +177,16 @@
     path.lineJoinStyle = kCGLineJoinBevel;
     [[UIColor blackColor] set];
     [path stroke];
+}
+
+- (UIImage *)getShotImage{
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.frame.size.width, self.frame.size.height), YES, 0);
+    [[self layer] renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *shotImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return shotImage;
 }
 
 #pragma mark -------- 懒加载
